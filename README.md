@@ -8,5 +8,5 @@ How to run
 git clone git@github.com:MeiSign/Scala-collaborative-worksheets.git
 cd Scala-collaborative-worksheets
 chmod +x activator
-activator run
+./activator run
 ```
