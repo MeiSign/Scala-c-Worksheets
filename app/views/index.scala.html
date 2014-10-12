@@ -1,7 +1,41 @@
 @(message: String)
 
-@main("Welcome to Play") {
+@main(message) {
+<div id="content">
 
-    @play20.welcome(message)
+</div>
+<script type="text/javascript">
+if (!!window.EventSource) {
+  var source = new EventSource('cursorPositionFeed/testsheet');
+  source.addEventListener('message', function(e) {
+    $("#content").append("<p>" + e.data + "</p>");
+    console.log(e.data);
+  }, false);
 
+source.addEventListener('open', function(e) {
+  console.log("opened");
+  postCursorPosition();
+}, false);
+
+source.addEventListener('error', function(e) {
+  if (e.readyState == EventSource.CLOSED) {
+    console.log("closed");
+  }
+}, false);
+} else {
+  alert("Polling!");
+}
+
+function postCursorPosition()
+{
+    var testData = { user: Math.random(), column: 1, line: 1, worksheet: "testsheet" };
+    $.ajax({
+        url: "setCursorPostion",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify(testData),
+        contentType: 'application/json'
+    });
+}
+</script>
 }
