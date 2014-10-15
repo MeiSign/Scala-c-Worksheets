@@ -2,10 +2,14 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# Longpolling
 GET     /                              controllers.LongPolling.view
 GET     /cursorPositionFeed/:worksheet controllers.LongPolling.cursorPositionFeed(worksheet: String)
 POST    /setCursorPostion              controllers.LongPolling.postCursorPosition
+
+# Websocket
+GET     /chat                       controllers.Websocket.index
+GET     /ws                         controllers.Websocket.ws
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
