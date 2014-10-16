@@ -10,9 +10,7 @@ import akka.actor.Props
 
 class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor with ActorLogging {
 
-  override def preStart() = {
-    SupervisorActor() ! Subscribe
-  }
+  override def preStart() = SupervisorActor() ! SubscribeMessage
 
   def receive = LoggingReceive {
     case Message(uuid, operation) if sender == supervisor =>
@@ -38,5 +36,3 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
 object UserActor {
   def props(user: User)(out: ActorRef) = Props(new UserActor(user, SupervisorActor(), out))
 }
-
-object Subscribe

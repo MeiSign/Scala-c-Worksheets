@@ -14,3 +14,4 @@ case class AddOperation(position: Int, char: Int) extends MessageOperation {
 
 case class Message(uuid: Uuid, operation: MessageOperation)
 
+object SubscribeMessage
