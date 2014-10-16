@@ -5,6 +5,7 @@ import play.api.libs.iteratee.{Enumeratee, Concurrent}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, Controller}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object LongPolling extends Controller {
   def view = Action { Ok(views.html.index("Test")) }

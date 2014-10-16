@@ -3,6 +3,7 @@ package actors
 import akka.actor.Actor
 import akka.actor.ActorLogging
 import akka.event.LoggingReceive
+import domain.User
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import akka.actor.ActorRef
@@ -10,7 +11,7 @@ import akka.actor.Props
 import scala.xml.Utility
 
 
-class UserActor(uid: String, supervisor: ActorRef, out: ActorRef) extends Actor with ActorLogging {
+class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor with ActorLogging {
 
   override def preStart() = {
     SupervisorActor() ! Subscribe
@@ -21,13 +22,13 @@ class UserActor(uid: String, supervisor: ActorRef, out: ActorRef) extends Actor 
       val js = Json.obj("type" -> "message", "uid" -> muid, "msg" -> s)
       out ! js
     }
-    case js: JsValue => (js \ "msg").validate[String] map { Utility.escape(_) }  map { supervisor ! Message(uid, _ ) }
+    case js: JsValue => (js \ "msg").validate[String] map { Utility.escape }  map { supervisor ! Message(user.uuid.value, _ ) }
     case other => log.error("unhandled: " + other)
   }
 }
 
 object UserActor {
-  def props(uid: String)(out: ActorRef) = Props(new UserActor(uid, SupervisorActor(), out))
+  def props(user: User)(out: ActorRef) = Props(new UserActor(user, SupervisorActor(), out))
 }
 
 case class Message(uuid: String, s: String)

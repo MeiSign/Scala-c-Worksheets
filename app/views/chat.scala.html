@@ -1,6 +1,7 @@
 @import play.api.mvc.RequestHeader
+@import domain.User
 
-@(uuid: String)(implicit request: RequestHeader)
+@(user: User)(implicit request: RequestHeader)
 
 <!DOCTYPE html>
 
@@ -33,7 +34,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3 strong text-right ">
-            User @uuid
+            User @user.name.value
         </div>
         <div class="col-xs-9">
             <form id="msgform" class="form-horizontal" >
