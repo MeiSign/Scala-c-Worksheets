@@ -1,14 +1,11 @@
 package controllers
 
 import domain.{Uuid, Username, User}
-import play.api.Logger
-
 import scala.concurrent.Future
-
 import actors.UserActor
-import play.api.Play.current
 import play.api.libs.json.JsValue
 import play.api.mvc.{Session, Action, Controller, WebSocket}
+import play.api.Play.current
 
 object Websocket extends Controller {
   val uuidSessionKey = "uuid"
@@ -18,7 +15,7 @@ object Websocket extends Controller {
     implicit request => {
       val user = getUserFromSession(request.session).getOrElse(User(genUuid, Username("Hans")))
 
-      Ok(views.html.chat(user)).withSession(request.session +
+      Ok(views.html.editor(user)).withSession(request.session +
         (uuidSessionKey -> user.uuid.value) +
         (usernameSessionKey -> user.name.value))
     }
