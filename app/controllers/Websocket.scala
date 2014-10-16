@@ -11,28 +11,28 @@ import play.api.libs.json.JsValue
 import play.api.mvc.{Session, Action, Controller, WebSocket}
 
 object Websocket extends Controller {
-  val UUID = "uuid"
-  val username = "username"
+  val uuidSessionKey = "uuid"
+  val usernameSessionKey = "username"
 
   def index = Action {
     implicit request => {
       val user = getUserFromSession(request.session).getOrElse(User(genUuid, Username("Hans")))
 
-      Ok(views.html.chat(user)).withSession(request.session + (UUID -> user.uuid.value) + (username -> user.name.value))
+      Ok(views.html.chat(user)).withSession(request.session +
+        (uuidSessionKey -> user.uuid.value) +
+        (usernameSessionKey -> user.name.value))
     }
   }
 
   def ws = WebSocket.tryAcceptWithActor[JsValue, JsValue] {
-    implicit request =>
-
-      Future.successful(getUserFromSession(request.session) match {
+    implicit request => Future.successful(getUserFromSession(request.session) match {
       case None => Left(Forbidden)
       case Some(user) => Right(UserActor.props(user))
     })
   }
 
   def getUserFromSession(session: Session): Option[User] = {
-    (session.get(UUID), session.get(username)) match {
+    (session.get(uuidSessionKey), session.get(usernameSessionKey)) match {
       case (Some(uuid), Some(name)) => Some(User(Uuid(uuid), Username(name)))
       case _ => None
     }
