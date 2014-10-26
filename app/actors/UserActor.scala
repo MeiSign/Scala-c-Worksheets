@@ -17,8 +17,8 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
       val js = generateOperationJson(uuid, operation)
       out ! js
     case js: JsValue => (js \ "type").asOpt[String] match {
-      case Some("add") => supervisor ! Message(user.uuid, AddOperation((js \ "position").as[Int], (js \ "char").as[Int]))
-      case Some("delete") => supervisor ! Message(user.uuid, DeleteOperation((js \ "position").as[Int]))
+      case Some("add") => supervisor ! Message(user.uuid, AddOperation((js \ "version").as[Long], (js \ "position").as[Int], (js \ "char").as[Int]))
+      case Some("delete") => supervisor ! Message(user.uuid, DeleteOperation((js \ "version").as[Long], (js \ "position").as[Int]))
       case _ => log.error("unhandled operation: " + js)
     }
     case other => log.error("unhandled: " + other)

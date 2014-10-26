@@ -27,10 +27,10 @@ $ ->
     switch event.keyCode
       when 8
         console.log("Char deleted at position: " + (cursorPos + 1))
-        ws.send(JSON.stringify({type: "delete", position: cursorPos + 1}))
+        ws.send(JSON.stringify({version: 0, type: "delete", position: cursorPos + 1}))
       else
         console.log("Char added: " + event.keyCode + " at position " + (cursorPos - 1))
-        ws.send(JSON.stringify({type: "add", char: event.keyCode, position: cursorPos - 1}))
+        ws.send(JSON.stringify({version: 0, type: "add", char: event.keyCode, position: cursorPos - 1}))
 
   getCursorPosition = (el) ->
     pos = 0

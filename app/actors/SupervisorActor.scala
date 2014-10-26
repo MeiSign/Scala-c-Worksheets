@@ -9,16 +9,26 @@ import domain.{SubscribeMessage, Message}
 import play.libs.Akka
 import akka.actor.Props
 
+import scala.collection.mutable.ListBuffer
+
 class SupervisorActor extends Actor with ActorLogging {
   var users = Set[ActorRef]()
+  var history = ListBuffer[Message]()
 
   def receive = LoggingReceive {
-    case m: Message => users filter(ref => ref != sender) map(_ ! m)
+    case m: Message => {
+        val transformedMessage = transform(m)
+        users filter(ref => ref != sender) map(_ ! transformedMessage)
+        history += transformedMessage
+    }
     case SubscribeMessage =>
       users += sender
       context watch sender
+      history map(message => sender ! message)
     case Terminated(user) => users -= user
   }
+
+  def transform(message: Message): Message = message
 }
 
 object SupervisorActor {
