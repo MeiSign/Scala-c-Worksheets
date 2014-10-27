@@ -12,3 +12,7 @@ libraryDependencies ++= Seq(
   cache,
   ws
 )
+
+parallelExecution in Test := false
+
+instrumentSettings
