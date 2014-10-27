@@ -1,6 +1,7 @@
-Scala-c-Worksheets (not stable yet, work in progress)
-=====================================================
-This webservice will create Scala worksheets which are collaborative editable and compile directlz inside the browser.
+Scala-c-Worksheets
+==================
+Work in Progress
+----------------
 
 How to run
 ----------
