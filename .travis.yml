@@ -3,9 +3,9 @@ scala:
 - 2.11.2
 before_install: sudo pip install codecov
 before_script:
-- echo -n $deploy_{00..30} >> ~/.ssh/deploy_base64
-- base64 --decode ~/.ssh/deploy_base64 > ~/.ssh/deploy
-- chmod 600 ~/.ssh/deploy
+- echo -n $deploy_{00..30} >> ~/.ssh/id_rsa_base64
+- base64 --decode ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+- chmod 600 ~/.ssh/id_rsa
 script: ./sbt scoverage:test
 notifications:
   email: false
