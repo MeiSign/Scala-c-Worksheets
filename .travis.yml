@@ -9,5 +9,5 @@ before_script:
 script: ./sbt clean coverage test
 notifications:
   email: false
-after_success: ./scripts/after-success.sh
+after_success: ./after-success.sh
 secure: A6roKji3bsVvfQ9c0kTY9h259rvNcKGz+RghHgE56RIP9ClJR0VJhsTyghKkwiIBfDTr0jJveBXu4sq6PH4iGqIcn1f6t1YI8ggw4Pmzvp+kZPTLZZ0s8fm/VQlq5f4aAVMH4cO5ISHzyuF1Zkv+4surWbCM/PgVSVJAEaRa+KY=
