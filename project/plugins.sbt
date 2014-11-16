@@ -18,4 +18,4 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")
 //addSbtPlugin("com.typesafe.sbt" % "sbt-mocha" % "1.0.0")
 
 // code coverage
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "0.99.9")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.0.BETA1")

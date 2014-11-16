@@ -14,5 +14,3 @@ libraryDependencies ++= Seq(
 )
 
 parallelExecution in Test := false
-
-instrumentSettings
