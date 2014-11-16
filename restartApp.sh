@@ -5,5 +5,7 @@ then
   echo "Stopping App"
 fi
 echo "Starting App"
-nohup ./target/universal/stage/bin/Scala/Collaborative-worksheets 0<&- &>/dev/null &
+./sbt clean
+./sbt stage
+nohup ./target/universal/stage/bin/scala-collaborative-worksheets 0<&- &>/dev/null &
 exit 0
