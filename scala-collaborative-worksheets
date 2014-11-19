@@ -3,14 +3,6 @@
 # scala-collaborative-worksheets
 # description: scala-collaborative-worksheets
 
-# Source function library
-# if [ -f /etc/init.d/functions ]; then
-# . /etc/init.d/functions
-# fi
-# SNV_HOME=/usr/share/admin
-# MEM=$(cat $SNV_CONF/conf/memory)
-# BACKEND_IP=$(host $HOSTNAME | awk '{print $4}')
-
 #SCW_HOME=/Users/stefanmeiwald/Workspace/HTW/Scala-collaborative-worksheets
 SCW_HOME=/home/deploy/Scala-collaborative-worksheets
 PID_FILE=$SCW_HOME/target/universal/stage/RUNNING_PID
@@ -73,8 +65,8 @@ case "$1" in
         true
         ;;
   restart)
-        stop
-        start
+        ./scala-collaborative-worksheets stop
+        ./scala-collaborative-worksheets start
         ;;
   status)
         echo -n "Status of scala-collaborative-worksheets: "
