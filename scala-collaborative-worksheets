@@ -11,8 +11,8 @@
 # MEM=$(cat $SNV_CONF/conf/memory)
 # BACKEND_IP=$(host $HOSTNAME | awk '{print $4}')
 
-SCW_HOME=/Users/stefanmeiwald/Workspace/HTW/Scala-collaborative-worksheets
-#SCW_HOME=/home/deploy/Scala-collaborative-worksheets
+#SCW_HOME=/Users/stefanmeiwald/Workspace/HTW/Scala-collaborative-worksheets
+SCW_HOME=/home/deploy/Scala-collaborative-worksheets
 PID_FILE=$SCW_HOME/target/universal/stage/RUNNING_PID
 LOCK_FILE=$SCW_HOME/lock
 OUT_FILE=$SCW_HOME/logs/Scala-collaborative-worksheets.log
