@@ -6,6 +6,7 @@
 GET     /                              controllers.LongPolling.view
 GET     /cursorPositionFeed/:worksheet controllers.LongPolling.cursorPositionFeed(worksheet: String)
 POST    /setCursorPostion              controllers.LongPolling.postCursorPosition
+GET     /status                        controllers.Application.status
 
 # Websocket
 GET     /chat                       controllers.Websocket.index
