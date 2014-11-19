@@ -35,7 +35,7 @@ case "$1" in
          fi
          echo -n "."
          sleep 1
-         (( count -- ))
+         (( count-- ))
        done
        echo "failed."
        exit 1
@@ -55,7 +55,7 @@ case "$1" in
             kill -TERM $PID
             echo -n "."
             sleep 1
-            (( count -- ))
+            (( count-- ))
           done
           echo "Send KILL to $PID"
           kill -9 $PID
