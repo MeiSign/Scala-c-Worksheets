@@ -9,11 +9,18 @@
 <html>
 <head>
     <title>Anonymous Chat</title>
-    <link rel="stylesheet" media="screen" href='@routes.Assets.at("stylesheets/main.css")'>
+    <link rel="stylesheet" media="screen" href='@routes.Assets.at("stylesheets/main.less")'>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
 </head>
 <body data-ws-url="@routes.Websocket.ws().webSocketURL()" class="bg-primary" >
-<textarea id="textarea"></textarea>
+<div id="editor"></div>
+
+<script src='@routes.Assets.at("javascripts/ace/ace.js")' type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/scala");
+</script>
 </body>
 </html>
