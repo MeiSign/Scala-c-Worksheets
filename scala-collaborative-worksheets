@@ -3,7 +3,6 @@
 # scala-collaborative-worksheets
 # description: scala-collaborative-worksheets
 
-#SCW_HOME=/Users/stefanmeiwald/Workspace/HTW/Scala-collaborative-worksheets
 SCW_HOME=/home/deploy/Scala-collaborative-worksheets
 PID_FILE=$SCW_HOME/target/universal/stage/RUNNING_PID
 LOCK_FILE=$SCW_HOME/lock
@@ -23,7 +22,7 @@ case "$1" in
          echo "scala-collaborative-worksheets is not running. Remove $PID_FILE "
          rm $PID_FILE
        fi
-       daemonize -E PATH=$PATH -l $LOCK_FILE -e $OUT_FILE -o $OUT_FILE $SCW_HOME/target/universal/stage/bin/scala-collaborative-worksheets
+       daemonize -E PATH=$PATH -l $LOCK_FILE -e $OUT_FILE -o $OUT_FILE $SCW_HOME/sbt start
 
        count=30
        while [ $count -gt 0 ]
