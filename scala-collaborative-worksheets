@@ -22,7 +22,7 @@ case "$1" in
          echo "scala-collaborative-worksheets is not running. Remove $PID_FILE "
          rm $PID_FILE
        fi
-       daemonize -E PATH=$PATH -l $LOCK_FILE -e $OUT_FILE -o $OUT_FILE $SCW_HOME/sbt start
+       daemonize -E PATH=$PATH -l $LOCK_FILE -e $OUT_FILE -o $OUT_FILE $SCW_HOME/target/universal/stage/bin/scala-collaborative-worksheets
 
        count=30
        while [ $count -gt 0 ]
