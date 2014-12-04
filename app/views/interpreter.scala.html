@@ -1,0 +1,24 @@
+@import MyHelpers.Compiler
+@(compiler: Compiler)
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Interpreter</title>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+	<input type="submit" value="Compile Code" onclick="interpret()">
+	<div id="content"></div>
+	<script type="text/javascript">		
+		function interpret() {
+			$.ajax({
+				url : "@{controllers.Interpreter.interpret}",
+				type : "POST"
+			});
+			$("#content").append("<p>" + @compiler.output + "</p>");
+		}
+	</script>
+</body>
+</html>
