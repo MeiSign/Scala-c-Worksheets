@@ -11,5 +11,9 @@ POST    /setCursorPostion              controllers.LongPolling.postCursorPositio
 GET     /chat                       controllers.Websocket.index
 GET     /ws                         controllers.Websocket.ws
 
+# Interpreter
+GET		/interpreter				controllers.Interpreter.init
+POST	/interpreter/setResult		controllers.Interpreter.interpret
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
