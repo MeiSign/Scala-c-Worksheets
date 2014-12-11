@@ -12,3 +12,10 @@ GET     /ws                         controllers.Websocket.ws
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Interpreter
+GET		/interpreter				controllers.Interpreter.index
+POST	/interpreter/setResult		controllers.Interpreter.interpret(input: String)
+
+# JavaScript
+GET /javascriptRoutes                  controllers.Application.javascriptRoutes

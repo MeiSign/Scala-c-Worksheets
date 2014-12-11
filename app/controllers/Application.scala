@@ -2,6 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import controllers.Interpreter._
 
 object Application extends Controller {
 
@@ -12,4 +13,16 @@ object Application extends Controller {
   def status = Action {
     Ok("Ok")
   }
+
+  // Javascript routing
+  def javascriptRoutes = Action {
+    implicit request =>
+      import routes.javascript._
+      Ok(
+        Routes.javascriptRouter("jsRoutes")(
+          Interpreter.interpret
+        )
+      ).as("text/javascript")
+  }
+
 }

@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   jdbc,
   anorm,
   cache,
-  ws
+  ws,
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value
 )
 
 parallelExecution in Test := false

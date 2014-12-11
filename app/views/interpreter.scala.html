@@ -1,0 +1,27 @@
+<DOCTYPE html>
+    <html>
+    <head>
+        <title>Interpreter</title>
+        <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    </head>
+    <body>
+    <div id="content">
+        <div>
+            <textarea id="editor"></textarea>
+            <button id="button" type="button">Interpret Demo</button>
+        </div>
+        <div id="output"></div>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+      $('#button').click( function() {
+        jsRoutes.controllers.Interpreter.interpret($('#editor').val()).ajax({
+          success: function(response) { $('#output').html(response); }
+        });
+      });
+    });
+
+    </script>
+    </body>
+    </html>
