@@ -1,25 +1,23 @@
 package controllers
 
 import play.api.mvc.{Action, Controller}
+import javax.script.ScriptEngineManager
 
-import scala.tools.nsc.Settings
-import scala.tools.nsc.interpreter.IMain
+class Interpreter extends Controller {
 
-object Interpreter extends Controller {
+  val interpreter = new ScriptEngineManager().getEngineByName("scala")
+  val settings = interpreter.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+  settings.embeddedDefaults[Interpreter]
+  settings.usejavacp.value = true
 
   def index = Action {
     Ok(views.html.interpreter())
   }
 
   def interpret(input: String) = Action { implicit request =>
-    val settings = new Settings
-    settings.usejavacp.value = true
-    settings.deprecation.value = true
-    val imain = new IMain(settings)
-    imain.interpret("val x = 1")
-    println(imain.valueOfTerm("x"))
-    imain.close
+    interpreter.eval("1 to 10 foreach println")
     Ok("Got: " + input)
   }
-
 }
+
+object Interpreter

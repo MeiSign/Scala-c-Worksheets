@@ -14,8 +14,8 @@ GET     /ws                         controllers.Websocket.ws
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Interpreter
-GET		/interpreter				controllers.Interpreter.index
-POST	/interpreter/setResult		controllers.Interpreter.interpret(input: String)
+GET		/interpreter				@controllers.Interpreter.index
+POST	/interpreter/setResult		@controllers.Interpreter.interpret(input: String)
 
 # JavaScript
 GET /javascriptRoutes                  controllers.Application.javascriptRoutes
