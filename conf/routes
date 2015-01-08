@@ -3,11 +3,10 @@
 # ~~~~
 
 # Longpolling
-GET     /                              controllers.LongPolling.view
-GET     /cursorPositionFeed/:worksheet controllers.LongPolling.cursorPositionFeed(worksheet: String)
-POST    /setCursorPostion              controllers.LongPolling.postCursorPosition
+GET     /status                     controllers.Application.status
 
 # Websocket
+GET     /                           controllers.Websocket.index
 GET     /chat                       controllers.Websocket.index
 GET     /ws                         controllers.Websocket.ws
 
@@ -20,3 +19,10 @@ GET /javascriptRoutes                  controllers.Application.javascriptRoutes
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Interpreter
+GET		/interpreter				controllers.Interpreter.index
+POST	/interpreter/setResult		controllers.Interpreter.interpret(input: String)
+
+# JavaScript
+GET /javascriptRoutes                  controllers.Application.javascriptRoutes

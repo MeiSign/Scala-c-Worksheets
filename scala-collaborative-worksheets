@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# scala-collaborative-worksheets
+# description: scala-collaborative-worksheets
+
+SCW_HOME=/home/deploy/Scala-collaborative-worksheets
+PID_FILE=/home/deploy/RUNNING_PID
+LOCK_FILE=$SCW_HOME/lock
+OUT_FILE=$SCW_HOME/logs/Scala-collaborative-worksheets.log
+
+case "$1" in
+  start)
+       # lock
+       echo -n "Starting scala-collaborative-worksheets: "
+      if [ -e $PID_FILE ]; then
+         echo "PID_FILE: $PID_FILE exists"
+         ps -p $(cat $PID_FILE) >> /dev/null
+         if [ $? == 0 ]; then
+           echo "scala-collaborative-worksheets is already running"
+           exit 0
+         fi
+         echo "scala-collaborative-worksheets is not running. Remove $PID_FILE "
+         rm $PID_FILE
+       fi
+       daemonize -E PATH=$PATH -l $LOCK_FILE -e $OUT_FILE -o $OUT_FILE $SCW_HOME/target/universal/stage/bin/scala-collaborative-worksheets -Dpidfile.path=$PID_FILE
+
+       count=30
+       while [ $count -gt 0 ]
+       do
+         STATUS=$(curl --max-time 5 -sLw "%{http_code}"  http://127.0.0.1:9000/status -o /dev/null);
+         if [ "$STATUS" = "200" ]; then
+           echo "done."
+           exit 0
+         fi
+         echo -n "."
+         sleep 1
+         count=$((count-1))
+       done
+       echo "failed."
+       exit 1
+       ;;
+  stop)
+        echo -n "Stopping scala-collaborative-worksheets: "
+        if [ -e $PID_FILE ]; then
+          PID=$(cat $PID_FILE)
+          count=15
+          while [ $count -gt 0 ]
+          do
+            ps -p $PID >> /dev/null 2>&1
+            if [ "$?" != 0 ]; then
+              echo "done."
+              exit 0
+            fi
+            kill -TERM $PID
+            echo -n "."
+            sleep 1
+            count=$((count-1))
+          done
+          echo "Send KILL to $PID"
+          kill -9 $PID
+        else
+          echo "already stopped"
+        fi
+        true
+        ;;
+  restart)
+        ./scala-collaborative-worksheets stop
+        ./scala-collaborative-worksheets start
+        ;;
+  status)
+        echo -n "Status of scala-collaborative-worksheets: "
+        RETVAL=2
+        MSG="not running."
+        if [ -e $PID_FILE ]; then
+                PID=$(cat $PID_FILE)
+                ps $PID >> /dev/null
+                if [ $? = 0 ]; then
+                        MSG="running."
+                        RETVAL=0
+                fi
+        fi
+        echo $MSG
+        ;;
+  *)
+        echo "Usage: scala-collaborative-worksheets {start|stop}"
+        RETVAL=2
+esac
+
+exit $RETVAL
