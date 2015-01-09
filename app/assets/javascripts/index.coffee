@@ -1,8 +1,11 @@
 $ ->
   initEditor = () ->
+    Range = ace.require("ace/range").Range
     editor = ace.edit("editor")
     editor.setTheme("ace/theme/twilight")
+    editor.setFontSize(16)
     editor.getSession().setMode("ace/mode/scala")
+    editor.setValue("asdadad adadasdaa fasfasda fasdfasdaf\ndasdasdasda sdasdasd dghfhjjhj hfhghgh\nadasdasd fasfafaf sadadasd")
 
     editor
 
@@ -34,6 +37,9 @@ $ ->
                  ws.send(JSON.stringify({version: 0, type: "add", char: event.keyCode, position: cursorPos - 1}))
 
   editor = initEditor()
+  editor.session.addMarker(editor.selection.getWordRange(0, 10), "error")
+  editor.session.addMarker(editor.selection.getWordRange(1, 10), "warning")
+  editor.session.addMarker(editor.selection.getWordRange(2, 10), "info")
   ws = initWebSocket()
   registerEditorEvents(ws)
 
