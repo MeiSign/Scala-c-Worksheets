@@ -13,23 +13,23 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
   override def preStart() = SupervisorActor() ! SubscribeMessage
 
   def receive = LoggingReceive {
-    case Message(uuid, operation) if sender == supervisor =>
-      val js = generateOperationJson(uuid, operation)
+    case m: Message if sender == supervisor =>
+      val js = generateOperationJson(m)
       out ! js
     case js: JsValue => (js \ "type").asOpt[String] match {
-      case Some("add") => supervisor ! Message(user.uuid, AddOperation((js \ "version").as[Long], (js \ "position").as[Int], (js \ "char").as[Int]))
-      case Some("delete") => supervisor ! Message(user.uuid, DeleteOperation((js \ "version").as[Long], (js \ "position").as[Int]))
+      case Some("add") => supervisor ! Message((js \ "version").as[Long], user.uuid, AddOperation((js \ "position").as[Int], (js \ "char").as[Int]))
+      case Some("delete") => supervisor ! Message((js \ "version").as[Long], user.uuid, DeleteOperation((js \ "position").as[Int]))
       case _ => log.error("unhandled operation: " + js)
     }
     case other => log.error("unhandled: " + other)
   }
 
-  def generateOperationJson(uuid: Uuid, op: MessageOperation): JsObject =
-    op match {
+  def generateOperationJson(m: Message): JsObject =
+    m.operation match {
       case add: AddOperation =>
-        Json.obj("type" -> "add", "uuid" -> uuid.value, "position" -> add.position, "char" -> add.char)
+        Json.obj("version" -> m.version, "type" -> "add", "uuid" -> m.uuid.value, "position" -> add.position, "char" -> add.char)
       case del: DeleteOperation =>
-        Json.obj("type" -> "delete", "uuid" -> uuid.value, "position" -> del.position)
+        Json.obj("version" -> m.version, "type" -> "delete", "uuid" -> m.uuid.value, "position" -> del.position)
   }
 }
 

@@ -28,7 +28,10 @@ class SupervisorActor extends Actor with ActorLogging {
     case Terminated(user) => users -= user
   }
 
-  def transform(message: Message): Message = message
+  def transform(message: Message): Message = {
+    val relevantHistory = history.filter(m => m.version >= message.version)
+    message
+  }
 }
 
 object SupervisorActor {
