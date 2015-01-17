@@ -17,19 +17,20 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
       val js = generateOperationJson(m)
       out ! js
     case js: JsValue => (js \ "type").asOpt[String] match {
-      case Some("add") => supervisor ! Message((js \ "version").as[Long], user.uuid, AddOperation((js \ "position").as[Int], (js \ "char").as[Int]))
-      case Some("delete") => supervisor ! Message((js \ "version").as[Long], user.uuid, DeleteOperation((js \ "position").as[Int]))
+      case Some("insert") => supervisor ! Message((js \ "version").as[Long], user.uuid, AddOperation((js \ "range").as[Range], (js \ "text").as[String]))
+      case Some("delete") => supervisor ! Message((js \ "version").as[Long], user.uuid, DeleteOperation((js \ "range").as[Range]))
       case _ => log.error("unhandled operation: " + js)
     }
     case other => log.error("unhandled: " + other)
   }
 
-  def generateOperationJson(m: Message): JsObject =
+  def generateOperationJson(m: Message): JsValue = {
     m.operation match {
       case add: AddOperation =>
-        Json.obj("version" -> m.version, "type" -> "add", "uuid" -> m.uuid.value, "position" -> add.position, "char" -> add.char)
+        Json.obj("version" -> m.version, "type" -> "insert", "uuid" -> m.uuid.value, "range" -> add.range, "text" -> add.text)
       case del: DeleteOperation =>
-        Json.obj("version" -> m.version, "type" -> "delete", "uuid" -> m.uuid.value, "position" -> del.position)
+        Json.obj("version" -> m.version, "type" -> "delete", "uuid" -> m.uuid.value, "range" -> del.range)
+    }
   }
 }
 
