@@ -16,6 +16,12 @@ case class AddOperation(r: Range, text: String) extends MessageOperation {
 object AddOperation {
   implicit val addOperationFormat: Format[AddOperation] = Json.format[AddOperation]
 }
+case class AddLinesOperation(r: Range, lines: List[String]) extends MessageOperation {
+  override val range: Range = r
+}
+object AddLinesOperationOperation {
+  implicit val addOperationFormat: Format[AddLinesOperation] = Json.format[AddLinesOperation]
+}
 
 case class Message(version: Long, uuid: Uuid, operation: MessageOperation)
 

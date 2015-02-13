@@ -18,6 +18,7 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
       out ! js
     case js: JsValue => (js \ "type").asOpt[String] match {
       case Some("insert") => supervisor ! Message((js \ "version").as[Long], user.uuid, AddOperation((js \ "range").as[Range], (js \ "text").as[String]))
+      case Some("insertLines") => supervisor ! Message((js \ "version").as[Long], user.uuid, AddLinesOperation((js \ "range").as[Range], (js \ "lines").as[List[String]]))
       case Some("delete") => supervisor ! Message((js \ "version").as[Long], user.uuid, DeleteOperation((js \ "range").as[Range]))
       case _ => log.error("unhandled operation: " + js)
     }
@@ -28,8 +29,11 @@ class UserActor(user: User, supervisor: ActorRef, out: ActorRef) extends Actor w
     m.operation match {
       case add: AddOperation =>
         Json.obj("version" -> m.version, "type" -> "insert", "uuid" -> m.uuid.value, "range" -> add.range, "text" -> add.text)
+      case addLines: AddLinesOperation =>
+        Json.obj("version" -> m.version, "type" -> "insertLines", "uuid" -> m.uuid.value, "range" -> addLines.range, "lines" -> addLines.lines)
       case del: DeleteOperation =>
         Json.obj("version" -> m.version, "type" -> "delete", "uuid" -> m.uuid.value, "range" -> del.range)
+
     }
   }
 }
